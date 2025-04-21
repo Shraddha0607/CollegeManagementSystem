@@ -1,11 +1,11 @@
-﻿using System.Transactions;
+﻿using CollegeApp.Models.Dtos.RequestModels;
 using CollegeApp.Models.Dtos.ResponseModels;
 
 namespace CollegeApp.Repositories;
 
 public interface ITransactionRepo
 {
-    Task<MessageResponse> AddTransactionAsync(Transaction transaction);
+    Task<TransactionResponse> GetByIdAsync(int id);
 
-    Task<TransactionResponse> GetTransactionByIdAsync(int transactionId);
+    Task<MessageResponse> AddAsync(TransactionRequest transactionRequest);
 }

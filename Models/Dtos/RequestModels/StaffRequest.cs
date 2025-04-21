@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using CollegeApp.Models.DomainModels;
 using CollegeApp.Models.Enums;
 
 namespace CollegeApp.Models.Dtos.RequestModels;
 
 public class StaffRequest
 {
-    public int Id { get; set; }
-
     [Required(ErrorMessage = "Name is required!")]
     [MaxLength(50, ErrorMessage = "Only 50 character allowed!")]
     public string Name { get; set; }
@@ -16,7 +13,6 @@ public class StaffRequest
     public DateOnly Dob { get; set; }
 
     public int DepartmentId { get; set; }
-    public Department Department { get; set; }
 
     [Required(ErrorMessage = "Position is required!")]
     public Position Position { get; set; }
