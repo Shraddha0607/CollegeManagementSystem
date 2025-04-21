@@ -3,7 +3,6 @@ using CollegeApp.Exceptions;
 using CollegeApp.Models.DomainModels;
 using CollegeApp.Models.Dtos.RequestModels;
 using CollegeApp.Models.Dtos.ResponseModels;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollegeApp.Repositories;
@@ -20,7 +19,12 @@ public class StudentRepo : IStudentRepo
     public async Task<MessageResponse> AddAsync(StudentRequest studentRequest)
     {
         var isValid = await dbContext.Students
-            .FirstOrDefaultAsync(x => x.AadharNo == studentRequest.AadharNo || x.Email == studentRequest.Email);
+            .Select(x =>  new {
+                x.AadharNo,
+                x.Email
+            })
+            .FirstOrDefaultAsync(x => x.AadharNo == studentRequest.AadharNo
+            || x.Email == studentRequest.Email);
 
         if (isValid != null)
         {
@@ -48,28 +52,23 @@ public class StudentRepo : IStudentRepo
 
     public async Task<StudentResponse> GetByIdAsync(int id)
     {
-        var student = await dbContext.Students.FindAsync(id);
-        if (student == null)
+        var response = await dbContext.Marks
+            .Include(x => x.Student)
+            .Select(x => new StudentResponse
+            {
+                Id = x.Id,
+                Name = x.Student.Name,
+                Course = x.Student.Course,
+                Percentage = x.Percentage,
+            })
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (response == null)
         {
             throw new CustomException("Invalid Id");
         }
 
-        var percentage = await dbContext.Marks
-            .FirstOrDefaultAsync(x => x.StudentId == id);
-
-        if (percentage == null)
-        {
-            throw new CustomException("Percentage not found for id!");
-        }
-
-        StudentResponse studentResponse = new StudentResponse
-        {
-            Name = student.Name,
-            Course = student.Course,
-            Percentage = percentage.Percentage,
-        };
-
-        return studentResponse;
+        return response;
     }
 
     public async Task<List<StudentResponse>> GetTopFive()
@@ -89,11 +88,12 @@ public class StudentRepo : IStudentRepo
         return students;
     }
 
-    [HttpPost]
     public async Task<MessageResponse> AddMarks(int studentId, double percentage)
     {
-        var student = await dbContext.Students.FindAsync(studentId);
-        if (student == null)
+        var student = await dbContext.Students
+            .AnyAsync(x => x.Id == studentId);
+
+        if (!student)
         {
             throw new CustomException("Student Id not found!");
         }
@@ -101,7 +101,6 @@ public class StudentRepo : IStudentRepo
         Marks mark = new Marks
         {
             StudentId = studentId,
-            Student = student,
             Percentage = percentage,
         };
 

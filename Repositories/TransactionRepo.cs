@@ -19,9 +19,9 @@ namespace CollegeApp.Repositories
         public async Task<MessageResponse> AddAsync(TransactionRequest transactionRequest)
         {
             var applicant = await dbContext.Applicants
-                .FirstOrDefaultAsync(x => x.Id == transactionRequest.ApplicantId);
+                .AnyAsync(x => x.Id == transactionRequest.ApplicantId);
 
-            if (applicant == null)
+            if (!applicant)
             {
                 throw new CustomException("Applicant Id not found!");
             }
@@ -32,7 +32,6 @@ namespace CollegeApp.Repositories
                 Amount = transactionRequest.Amount,
                 Source = transactionRequest.Source,
                 ApplicantId = transactionRequest.ApplicantId,
-                Applicant = applicant,
             };
 
             await dbContext.Transactions.AddAsync(transaction);
@@ -43,22 +42,23 @@ namespace CollegeApp.Repositories
 
         public async Task<TransactionResponse> GetByIdAsync(int id)
         {
-            var transaction = await dbContext.Transactions.FindAsync(id);
+            var transaction = await dbContext.Transactions
+                .Select(x => new TransactionResponse
+                {
+                    Id = x.Id,
+                    DateTime = x.DateTime,
+                    Amount = x.Amount,
+                    Source = x.Source,
+                    ApplicantId = x.ApplicantId
+                })
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (transaction == null)
             {
                 throw new CustomException("Invalid transaction id!");
             }
 
-            TransactionResponse response = new TransactionResponse
-            {
-                DateTime = transaction.DateTime,
-                Amount = transaction.Amount,
-                Source = transaction.Source,
-                ApplicantId = id
-            };
-
-            return response;
+            return transaction;
         }
     }
 }

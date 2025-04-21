@@ -18,7 +18,15 @@ public class ApplicantRepo : IApplicantRepo
 
     public async Task<MessageResponse> AddAsync(ApplicantRequest applicantRequest)
     {
-        var isValid = await dbContext.Applicants.FirstOrDefaultAsync(x => x.AadharNo == applicantRequest.AadharNo || x.Email == applicantRequest.Email);
+        var isValid = await dbContext.Applicants
+            .Select(x => new
+            {
+                x.AadharNo,
+                x.Email
+            })
+            .FirstOrDefaultAsync(x => x.AadharNo == applicantRequest.AadharNo ||
+                x.Email == applicantRequest.Email);
+
         if (isValid != null)
         {
             if (isValid.AadharNo == applicantRequest.AadharNo)

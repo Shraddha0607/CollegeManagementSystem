@@ -18,7 +18,10 @@ public class StaffRepo : IStaffRepo
 
     public async Task<MessageResponse> AddAsync(StaffRequest staffRequest)
     {
-        var isValid = await dbContext.Departments.AnyAsync(x => x.Id == staffRequest.DepartmentId);
+        var isValid = await dbContext.Departments
+            .AsNoTracking()
+            .AnyAsync(x => x.Id == staffRequest.DepartmentId);
+
         if (!isValid)
         {
             throw new CustomException("Department Id not found");
@@ -57,23 +60,24 @@ public class StaffRepo : IStaffRepo
     public async Task<StaffResponse> GetByIdAsync(int id)
     {
         var staff = await dbContext.Staffs
+            .AsNoTracking()
             .Include(x => x.Department)
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .Where(x => x.Id == id)
+            .Select(x => new StaffResponse
+            {
+                Name = x.Name,
+                Dob = x.Dob,
+                DepartmentName = x.Department.Name,
+                Position = x.Position.ToString(),
+                PhotoUrl = x.PhotoUrl,
+            })
+            .FirstOrDefaultAsync();
 
         if (staff == null)
         {
             throw new CustomException("Invalid Id!");
         }
 
-        StaffResponse staffResponse = new StaffResponse
-        {
-            Name = staff.Name,
-            Dob = staff.Dob,
-            DepartmentName = staff.Department.Name,
-            Position = staff.Position.ToString(),
-            PhotoUrl = staff.PhotoUrl,
-        };
-
-        return staffResponse;
+        return staff;
     }
 }

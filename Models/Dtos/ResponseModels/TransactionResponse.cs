@@ -4,7 +4,7 @@ namespace CollegeApp.Models.Dtos.ResponseModels;
 
 public class TransactionResponse
 {
-    [Required]
+    public int Id { get; set; }
     public DateTime DateTime { get; set; }
 
     public double Amount { get; set; }
