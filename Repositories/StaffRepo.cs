@@ -1,6 +1,5 @@
-﻿namespace CollegeApp.Repositories
+﻿namespace CollegeApp.Repositories;
+
+public class StaffRepo: IStaffRepo
 {
-    public class StaffRepo
-    {
-    }
 }

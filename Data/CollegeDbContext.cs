@@ -14,6 +14,7 @@ public class CollegeDbContext : DbContext
     public DbSet<Staff> Staffs { get; set; }
     public DbSet<Student> Students { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<Marks> Marks { get; set; }
 
     // set unique key
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,6 +39,10 @@ public class CollegeDbContext : DbContext
 
         modelBuilder.Entity<Department>()
             .HasIndex(b => b.Name)
+            .IsUnique();
+
+        modelBuilder.Entity<Marks>()
+            .HasIndex(b => b.StudentId)
             .IsUnique();
     }
 }

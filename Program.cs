@@ -17,6 +17,8 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<ITransactionRepo, TransactionRepo>();
 builder.Services.AddScoped<IApplicantRepo, ApplicantRepo>();
 builder.Services.AddScoped<IDepartmentRepo, DepartmentRepo>();
+builder.Services.AddScoped<IStudentRepo, StudentRepo>();
+builder.Services.AddScoped<IStaffRepo, StaffRepo>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

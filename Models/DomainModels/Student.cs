@@ -10,7 +10,8 @@ public class Student
     public string Name { get; set; }
 
     [Required(ErrorMessage = "Date of birth is required!")]
-    public int Dob { get; set; }
+    [DataType(DataType.Date)]
+    public DateOnly Dob { get; set; }
 
     [Required(ErrorMessage = "Course is required!")]
     public string Course { get; set; }
