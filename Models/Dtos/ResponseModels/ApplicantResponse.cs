@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using CollegeApp.Models.DomainModels;
-
-namespace CollegeApp.Models.Dtos.ResponseModels;
+﻿namespace CollegeApp.Models.Dtos.ResponseModels;
 
 public class ApplicantResponse
 {

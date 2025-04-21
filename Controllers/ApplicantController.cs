@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using CollegeApp.Exceptions;
+﻿using CollegeApp.Exceptions;
 using CollegeApp.Models.Dtos.RequestModels;
 using CollegeApp.Models.Dtos.ResponseModels;
 using CollegeApp.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollegeApp.Controllers
@@ -29,7 +27,8 @@ namespace CollegeApp.Controllers
                 var response = await repo.AddAsync(request);
                 return Ok(response);
             }
-            catch(CustomException ex){
+            catch (CustomException ex)
+            {
                 logger.LogError(ex.StackTrace);
                 logger.LogError(ex.Message);
                 return BadRequest(new MessageResponse { Message = ex.Message });
@@ -50,7 +49,8 @@ namespace CollegeApp.Controllers
                 var applicants = await repo.GetAllAsync();
                 return Ok(applicants);
             }
-            catch(CustomException ex){
+            catch (CustomException ex)
+            {
                 logger.LogError(ex.StackTrace);
                 logger.LogError(ex.Message);
                 return BadRequest(new MessageResponse { Message = ex.Message });

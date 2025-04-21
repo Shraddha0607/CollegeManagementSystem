@@ -2,7 +2,6 @@
 using CollegeApp.Data;
 using CollegeApp.Exceptions;
 using CollegeApp.Models.Dtos.ResponseModels;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollegeApp.Repositories
@@ -15,7 +14,6 @@ namespace CollegeApp.Repositories
         {
             this.dbContext = dbContext;
         }
-
 
         public async Task<MessageResponse> AddTransactionAsync(Transaction transaction)
         {

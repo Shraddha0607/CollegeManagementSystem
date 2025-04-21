@@ -35,6 +35,9 @@ public class CollegeDbContext : DbContext
         modelBuilder.Entity<Student>()
             .HasIndex(b => b.Email)
             .IsUnique();
-    }
 
+        modelBuilder.Entity<Department>()
+            .HasIndex(b => b.Name)
+            .IsUnique();
+    }
 }

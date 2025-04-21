@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using CollegeApp.Data;
+﻿using CollegeApp.Data;
+using CollegeApp.Exceptions;
 using CollegeApp.Models.DomainModels;
 using CollegeApp.Models.Dtos.RequestModels;
 using CollegeApp.Models.Dtos.ResponseModels;
@@ -9,16 +9,20 @@ namespace CollegeApp.Repositories
     public class DepartmentRepo : IDepartmentRepo
     {
         private readonly CollegeDbContext dbContext;
-        private readonly ILogger<DepartmentRepo> logger;
 
-        public DepartmentRepo(CollegeDbContext dbContext, ILogger<DepartmentRepo> logger)
+        public DepartmentRepo(CollegeDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.logger = logger;
         }
 
         public async Task<MessageResponse> AddAsync(DepartmentRequest departmentRequest)
         {
+            var isValid = dbContext.Departments.Any(x => x.Name == departmentRequest.Name);
+            if (isValid)
+            {
+                throw new CustomException("Already existing department name! It must be unique");
+            }
+
             Department department = new Department
             {
                 Name = departmentRequest.Name,
@@ -29,7 +33,6 @@ namespace CollegeApp.Repositories
             await dbContext.SaveChangesAsync();
 
             return new MessageResponse { Message = "Added successfully." };
-
         }
     }
 }

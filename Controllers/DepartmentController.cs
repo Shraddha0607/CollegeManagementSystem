@@ -2,7 +2,6 @@
 using CollegeApp.Models.Dtos.RequestModels;
 using CollegeApp.Models.Dtos.ResponseModels;
 using CollegeApp.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollegeApp.Controllers
@@ -19,8 +18,6 @@ namespace CollegeApp.Controllers
             this.repo = repo;
             this.logger = logger;
         }
-
-        public ILogger<DepartmentController> Logger { get; }
 
         [HttpPost]
         public async Task<ActionResult> Add(DepartmentRequest departmentRequest)

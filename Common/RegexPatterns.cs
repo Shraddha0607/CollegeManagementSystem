@@ -1,5 +1,4 @@
-
-﻿namespace OnRideApp.Common;
+namespace OnRideApp.Common;
 
 public static class RegexPatterns
 {

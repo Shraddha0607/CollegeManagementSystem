@@ -12,13 +12,11 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddDbContext<CollegeDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("CollegeDbConnectionString")));
 
-
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<ITransactionRepo, TransactionRepo>();
-builder.Services.AddScoped<IApplicantRepo, ApplicantRepo>();  
+builder.Services.AddScoped<IApplicantRepo, ApplicantRepo>();
 builder.Services.AddScoped<IDepartmentRepo, DepartmentRepo>();
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
