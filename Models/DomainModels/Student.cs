@@ -7,6 +7,7 @@ public class Student
     public int Id { get; set; }
 
     [Required(ErrorMessage = "Name is required!")]
+    [MaxLength(50, ErrorMessage = "Upto 50 characters allowed!")]
     public string Name { get; set; }
 
     [Required(ErrorMessage = "Date of birth is required!")]
@@ -14,6 +15,7 @@ public class Student
     public DateOnly Dob { get; set; }
 
     [Required(ErrorMessage = "Course is required!")]
+    [MaxLength(50, ErrorMessage = "Upto 50 characters allowed!")]
     public string Course { get; set; }
 
     [Required(ErrorMessage = "Aadhar number is required!")]

@@ -62,16 +62,16 @@ public class StaffRepo : IStaffRepo
         var staff = await dbContext.Staffs
             .AsNoTracking()
             .Include(x => x.Department)
-            .Where(x => x.Id == id)
             .Select(x => new StaffResponse
             {
+                Id = x.Id,
                 Name = x.Name,
                 Dob = x.Dob,
                 DepartmentName = x.Department.Name,
                 Position = x.Position.ToString(),
                 PhotoUrl = x.PhotoUrl,
             })
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(x => x.Id == id);
 
         if (staff == null)
         {

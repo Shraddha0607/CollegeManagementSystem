@@ -39,8 +39,8 @@ public class ApplicantRepo : IApplicantRepo
             }
         }
 
-        var department = await dbContext.Departments.FindAsync(applicantRequest.DepartmentId);
-        if (department == null)
+        var isValidDepartment = await dbContext.Departments.AsNoTracking().AnyAsync(x => x.Id == applicantRequest.DepartmentId);
+        if (!isValidDepartment)
         {
             throw new CustomException("Invalid Department Id!");
         }
@@ -50,7 +50,6 @@ public class ApplicantRepo : IApplicantRepo
             Name = applicantRequest.Name,
             AadharNo = applicantRequest.AadharNo,
             Course = applicantRequest.Course,
-            Department = department,
             DepartmentId = applicantRequest.DepartmentId,
             Session = applicantRequest.Session,
             Email = applicantRequest.Email

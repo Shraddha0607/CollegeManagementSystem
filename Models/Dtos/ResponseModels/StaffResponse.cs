@@ -2,6 +2,7 @@
 
 public class StaffResponse
 {
+    public int Id {get; set; }
     public string Name { get; set; }
 
     public DateOnly Dob { get; set; }

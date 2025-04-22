@@ -14,6 +14,7 @@ public class Transaction
     public double Amount { get; set; }
 
     [Required(ErrorMessage = "Source must be mention")]
+    [MaxLength(50, ErrorMessage = "Upto 50 characters allowed!")]
     public string Source { get; set; }
 
     public int ApplicantId { get; set; }

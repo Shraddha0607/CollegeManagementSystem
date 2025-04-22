@@ -19,6 +19,7 @@ public class Staff
 
     [Required(ErrorMessage = "Position is required!")]
     public Position Position { get; set; }
-
+    
+    [MaxLength(100, ErrorMessage = "Upto 100 characters allowed!")]
     public string? PhotoUrl { get; set; }
 }
