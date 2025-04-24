@@ -1,5 +1,5 @@
 import React from 'react'
-import { about } from '../Service'
+import { about } from '../../util/Service'
 
 function ContactUs() {
   return (

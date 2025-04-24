@@ -7,6 +7,8 @@ namespace CollegeApp.Repositories
     {
         Task<MessageResponse> AddAsync(DepartmentRequest departmentRequest);
         Task<List<CourseResponse>> GetByIdAsync(int id);
+        Task<MessageResponse> DeleteByIdAsync(int id);
+        Task<MessageResponse> UpdateAsync(DepartmentRequest departmentRequest);
         Task<List<DepartmentResponse>> GetAllDepartment();
     }
 }

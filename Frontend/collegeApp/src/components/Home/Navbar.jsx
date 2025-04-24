@@ -1,7 +1,7 @@
 import React from 'react'
-import { menus } from '../Service'
-import '../index.css'
-import '../assets/react.svg'
+import { menus } from '../../util/Service'
+import '../../index.css'
+import '../../assets/react.svg'
 
 function Navbar() {
   return (

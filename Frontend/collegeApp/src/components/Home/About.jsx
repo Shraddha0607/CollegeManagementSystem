@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { about } from '../Service'
-import { getToppers } from '../Service'
+import { about } from '../../util/Service'
+import { getToppers } from '../../util/Service'
 
 
 function About() {
-    const[toppers, setToppers] = useState([]);
+    const [toppers, setToppers] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getToppers().then(data => setToppers(data))
-        .finally(() => setLoading(false));
-
-        console.log("ghjk" , toppers);
+            .finally(() => setLoading(false));
     }, []);
-
-    if(loading) return <p> Loading toppers...</p>
 
     return (
         <>
@@ -23,7 +19,8 @@ function About() {
                 <div><p>{about.about}</p></div>
                 <h3>{about.mission}</h3>
             </div>
-            <div className=" container rounded bg-info mt-1   p-2 bd-highlight ">
+            {(loading) && <p> Loading toppers...</p>}
+            {(!loading) && <div className=" container rounded bg-info mt-1   p-2 bd-highlight ">
                 <h1 className='pb-2'> Our Toppers </h1>
                 <ul className='d-flex flex-row justify-content-center flex-wrap'>
                     {toppers.map((topper) => (
@@ -39,6 +36,8 @@ function About() {
                     ))}
                 </ul>
             </div>
+
+            }
         </>
 
     )

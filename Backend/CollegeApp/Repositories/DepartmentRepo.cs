@@ -36,6 +36,24 @@ namespace CollegeApp.Repositories
             return new MessageResponse { Message = "Added successfully." };
         }
 
+        public async Task<MessageResponse> DeleteByIdAsync(int id)
+        {
+            var department = await dbContext.Departments
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (department == null)
+            {
+                throw new CustomException("Invalid Id found");
+            }
+
+            dbContext.Departments.Remove(department);
+            await dbContext.SaveChangesAsync();
+
+            return new MessageResponse { Message = "Removed Successfully." };
+        }
+
+
         public async Task<List<DepartmentResponse>> GetAllDepartment()
         {
             var departments = await dbContext.Departments
@@ -49,6 +67,30 @@ namespace CollegeApp.Repositories
             return departments;
         }
 
+        public async Task<MessageResponse> UpdateAsync(DepartmentRequest departmentRequest)
+        {
+            var existingDepartment = await dbContext.Departments.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == departmentRequest.Id);
+
+            if (existingDepartment == null)
+            {
+                throw new CustomException("Invalid department id!");
+            }
+
+            var isValid = dbContext.Departments.Any(x => x.Name == departmentRequest.Name);
+            if (isValid)
+            {
+                throw new CustomException("Already existing department name! It must be unique");
+            }
+
+
+            existingDepartment.Name = departmentRequest.Name;
+            
+            dbContext.Departments.Update(existingDepartment);
+            await dbContext.SaveChangesAsync();
+
+            return new MessageResponse { Message = "Updated successfully." };
+        }
         public async Task<List<CourseResponse>> GetByIdAsync(int id)
         {
             var courses = await dbContext.Courses

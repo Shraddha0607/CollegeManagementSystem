@@ -1,8 +1,8 @@
 import React from 'react'
-import Navbar from './Navbar'
 import About from './About'
 import DepartmentSection from './DepartmentSection'
 import ContactUs from './ContactUs'
+import Navbar from './Navbar'
 
 
 function Home() {
