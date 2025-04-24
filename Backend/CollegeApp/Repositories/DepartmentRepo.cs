@@ -3,6 +3,7 @@ using CollegeApp.Exceptions;
 using CollegeApp.Models.DomainModels;
 using CollegeApp.Models.Dtos.RequestModels;
 using CollegeApp.Models.Dtos.ResponseModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollegeApp.Repositories
 {
@@ -33,6 +34,33 @@ namespace CollegeApp.Repositories
             await dbContext.SaveChangesAsync();
 
             return new MessageResponse { Message = "Added successfully." };
+        }
+
+        public async Task<List<DepartmentResponse>> GetAllDepartment()
+        {
+            var departments = await dbContext.Departments
+                .Select(x => new DepartmentResponse
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .ToListAsync();
+
+            return departments;
+        }
+
+        public async Task<List<CourseResponse>> GetByIdAsync(int id)
+        {
+            var courses = await dbContext.Courses
+                .Where(x => x.DepartmentId == id)
+                .Select(x => new CourseResponse
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .ToListAsync();
+
+            return courses;
         }
     }
 }

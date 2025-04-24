@@ -15,6 +15,7 @@ public class CollegeDbContext : DbContext
     public DbSet<Student> Students { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<Marks> Marks { get; set; }
+    public DbSet<Course> Courses {get; set; }
 
     // set unique key
     protected override void OnModelCreating(ModelBuilder modelBuilder)

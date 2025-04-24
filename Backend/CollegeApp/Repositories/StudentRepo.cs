@@ -77,6 +77,7 @@ public class StudentRepo : IStudentRepo
                 .Include(x => x.Student)
                 .Select(x => new StudentResponse
                 {
+                    Id = x.Student.Id,
                     Name = x.Student.Name,
                     Course = x.Student.Course,
                     Percentage = x.Percentage,
