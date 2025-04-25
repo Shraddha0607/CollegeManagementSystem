@@ -14,7 +14,7 @@ function About() {
 
     return (
         <>
-            <div class="container bg-info p-2 mt-6 rounded">
+            <div className="container bg-info p-2 mt-6 rounded">
                 <h1>{about.name}</h1>
                 <div><p>{about.about}</p></div>
                 <h3>{about.mission}</h3>
