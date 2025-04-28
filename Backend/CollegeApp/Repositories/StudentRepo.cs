@@ -1,4 +1,5 @@
-﻿using CollegeApp.Data;
+﻿using System.Collections;
+using CollegeApp.Data;
 using CollegeApp.Exceptions;
 using CollegeApp.Models.DomainModels;
 using CollegeApp.Models.Dtos.RequestModels;
@@ -118,17 +119,23 @@ public class StudentRepo : IStudentRepo
     public async Task<List<StudentResponse>> GetAllAsync()
     {
         var students = await dbContext.Students
-        .Join(dbContext.Marks, s => s.Id, m => m.Id, (s, m) => new StudentResponse
-        {
-            Id = s.Id,
-            Name = s.Name,
-            Course = s.Course,
-            Percentage = m.Percentage,
-            Dob = s.Dob,
-            Email = s.Email,
-            AadharNo = s.AadharNo,
-        })
-        .ToListAsync();
+            .GroupJoin(
+                dbContext.Marks, 
+                s => s.Id,        
+                m => m.StudentId, 
+                (s, m) => new { Student = s, Marks = m.DefaultIfEmpty() } 
+            )
+            .Select(x => new StudentResponse
+            {
+                Id = x.Student.Id,
+                Name = x.Student.Name,
+                Course = x.Student.Course,
+                Percentage = x.Marks.FirstOrDefault() != null ? x.Marks.FirstOrDefault().Percentage : 0,  
+                Dob = x.Student.Dob,
+                Email = x.Student.Email,
+                AadharNo = x.Student.AadharNo,
+            })
+            .ToListAsync();
 
         return students;
     }
