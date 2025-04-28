@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { getDepartments } from '../../util/Service'
+import { getDepartments } from '../../util/DepartmentServices'
+
 
 
 function DepartmentSection() {

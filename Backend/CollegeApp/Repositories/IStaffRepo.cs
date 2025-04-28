@@ -10,5 +10,7 @@ namespace CollegeApp.Repositories
         Task<MessageResponse> AddAsync(StaffRequest staffRequest);
 
         Task<List<StaffResponse>> GetAllAsync();
+        Task<MessageResponse> DeleteAsync(int id);
+        Task<MessageResponse> UpdateAsync(StaffRequest staffRequest);
     }
 }

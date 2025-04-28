@@ -4,5 +4,5 @@ public enum Position
 {
     Staff,
     Teacher,
-    Principle
+    Principal
 }

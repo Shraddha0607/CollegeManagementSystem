@@ -63,6 +63,49 @@ namespace CollegeApp.Controllers
             }
         }
 
+        [HttpDelete("/{id}")]
+        public async Task<ActionResult> Delete([FromRoute] int id){
+            try
+            {
+                var response = await repo.DeleteAsync(id);
+                return Ok(response);
+            }
+            catch (CustomException ex)
+            {
+                logger.LogError(ex.StackTrace);
+                logger.LogError(ex.Message);
+                return BadRequest(new MessageResponse { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.StackTrace);
+                logger.LogError(ex.Message);
+                return BadRequest("Error Occurred!");
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody] StaffRequest staffRequest ){
+            try
+            {
+                var response = await repo.UpdateAsync(staffRequest);
+                return Ok(response);
+            }
+            catch (CustomException ex)
+            {
+                logger.LogError(ex.StackTrace);
+                logger.LogError(ex.Message);
+                return BadRequest(new MessageResponse { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.StackTrace);
+                logger.LogError(ex.Message);
+                return BadRequest("Error Occurred!");
+            }
+        }
+
+
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {

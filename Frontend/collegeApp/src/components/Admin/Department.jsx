@@ -1,29 +1,53 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { saveDepartment, getDepartments, deleteDepartment } from '../../util/Service'
+import { saveDepartment, getDepartments, deleteDepartment } from '../../util/DepartmentServices'
+import '../../Custom.css'
 
-function DepartmentForm() {
+function Department() {
     const tempName = useRef();
 
     const [state, setState] = useState({
         departments: [],
         isLoading: true,
+        error : null,
     });
 
     const enableLoading = () => {
         setState((prevState) => ({
             ...prevState,
             isLoading: true,
+            error : null,
         }))
     }
-    const saveHandler = async () => {
 
-        const val = tempName.current.value;
+    const saveHandler = async (event) => {
+
+        event.preventDefault();
+        const val = tempName.current.value.trim();
+
+        if(!val){
+            setState((prevState) => ({
+                ...prevState,
+                error : "Name is required!",
+            }))
+            return;
+        }
+
+        const alphaRegex = /^[A-Za-z\s]+$/;
+        if(!alphaRegex.test(val)) {
+            setState((prevState) => ( {
+                ...prevState,
+                error : "Only letters and spaces are allowed!",
+            }));
+            return;
+        }
+
         const payload = {
             "name": val
         }
 
         enableLoading();
         await saveDepartment(payload);
+        tempName.current.value = "";
         setInitial();
     }
 
@@ -59,11 +83,17 @@ function DepartmentForm() {
         <>
             <div className="container bg-info p-2  mb-4">
                 <h1 className='p-1'>Add Department</h1>
-                <p>
+                <form onSubmit={saveHandler}>
                     <label>Name</label>
                     <input ref={tempName}></input>
-                </p>
-                <button onClick={() => saveHandler()}>Submit</button>
+                    <div>
+                        <button>Submit</button>
+                    </div >
+                    <div className='control-error'>
+                        {state.error && <p>{state.error}</p>}
+                    </div>
+                </form>
+
             </div>
             <div className='container bg-info p-5'>
                 <h1>Department Details</h1>
@@ -95,4 +125,4 @@ function DepartmentForm() {
     )
 }
 
-export default DepartmentForm
+export default Department

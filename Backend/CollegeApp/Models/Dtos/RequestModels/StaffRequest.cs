@@ -5,6 +5,7 @@ namespace CollegeApp.Models.Dtos.RequestModels;
 
 public class StaffRequest
 {
+    public int Id {get; set;}
     [Required(ErrorMessage = "Name is required!")]
     [MaxLength(50, ErrorMessage = "Only 50 character allowed!")]
     public string Name { get; set; }
