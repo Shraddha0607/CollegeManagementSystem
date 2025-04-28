@@ -19,7 +19,7 @@ namespace CollegeApp.Controllers
             this.logger = logger;
         }
 
-        [HttpGet("/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult> GetById([FromRoute] int id)
         {
             try
@@ -104,6 +104,72 @@ namespace CollegeApp.Controllers
                 logger.LogError(ex.StackTrace);
                 logger.LogError(ex.Message);
                 return BadRequest(new MessageResponse { Message = "Error Occurred!" });
+            }
+        }
+
+        [HttpGet("all")]
+        public async Task<ActionResult> GetAll()
+        {
+            try
+            {
+                var students = await repo.GetAllAsync();
+                return Ok(students);
+            }
+            catch (CustomException ex)
+            {
+                logger.LogError(ex.StackTrace);
+                logger.LogError(ex.Message);
+                return BadRequest(new MessageResponse { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.StackTrace);
+                logger.LogError(ex.Message);
+                return BadRequest(new MessageResponse { Message = "Error Occured!" });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete([FromRoute] int id)
+        {
+            try
+            {
+                var response = await repo.DeleteAsync(id);
+                return Ok(response);
+            }
+            catch (CustomException ex)
+            {
+                logger.LogError(ex.StackTrace);
+                logger.LogError(ex.Message);
+                return BadRequest(new MessageResponse { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.StackTrace);
+                logger.LogError(ex.Message);
+                return BadRequest(new MessageResponse { Message = "Error Occured!" });
+            }
+        }
+
+        [HttpPut("update")]
+        public async Task<ActionResult> Update([FromBody] StudentRequest studentRequest)
+        {
+            try
+            {
+                var response = await repo.UpdateAsync(studentRequest);
+                return Ok(response);
+            }
+            catch (CustomException ex)
+            {
+                logger.LogError(ex.StackTrace);
+                logger.LogError(ex.Message);
+                return BadRequest(new MessageResponse { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.StackTrace);
+                logger.LogError(ex.Message);
+                return BadRequest(new MessageResponse { Message = "Error Occured!" });
             }
         }
     }

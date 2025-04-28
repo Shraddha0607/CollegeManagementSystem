@@ -5,6 +5,7 @@ namespace CollegeApp.Models.Dtos.RequestModels;
 
 public class ApplicantRequest
 {
+    public int Id { get; set; }
     [Required(ErrorMessage = "Name is required!")]
     [MaxLength(50, ErrorMessage = "Only 50 character allowed!")]
     [RegularExpression(RegexPatterns.AlphaOnly, ErrorMessage = "Only Alphabet allowed!")]

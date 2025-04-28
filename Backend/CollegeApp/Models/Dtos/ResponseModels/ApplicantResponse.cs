@@ -2,6 +2,7 @@
 
 public class ApplicantResponse
 {
+    public int Id { get; set; }
     public string Name { get; set; }
     public string AadharNo { get; set; }
     public string Course { get; set; }

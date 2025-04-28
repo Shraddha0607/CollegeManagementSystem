@@ -19,7 +19,8 @@ public class StudentRepo : IStudentRepo
     public async Task<MessageResponse> AddAsync(StudentRequest studentRequest)
     {
         var isValid = await dbContext.Students
-            .Select(x =>  new {
+            .Select(x => new
+            {
                 x.AadharNo,
                 x.Email
             })
@@ -58,6 +59,9 @@ public class StudentRepo : IStudentRepo
             {
                 Id = x.Id,
                 Name = x.Student.Name,
+                Dob = x.Student.Dob,
+                Email = x.Student.Email,
+                AadharNo = x.Student.AadharNo,
                 Course = x.Student.Course,
                 Percentage = x.Percentage,
             })
@@ -109,5 +113,76 @@ public class StudentRepo : IStudentRepo
         await dbContext.SaveChangesAsync();
 
         return new MessageResponse { Message = "Saved successfully!" };
+    }
+
+    public async Task<List<StudentResponse>> GetAllAsync()
+    {
+        var students = await dbContext.Students
+        .Join(dbContext.Marks, s => s.Id, m => m.Id, (s, m) => new StudentResponse
+        {
+            Id = s.Id,
+            Name = s.Name,
+            Course = s.Course,
+            Percentage = m.Percentage,
+            Dob = s.Dob,
+            Email = s.Email,
+            AadharNo = s.AadharNo,
+        })
+        .ToListAsync();
+
+        return students;
+    }
+
+    public async Task<MessageResponse> DeleteAsync(int id)
+    {
+        var student = await dbContext.Students.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        if (student == null)
+        {
+            throw new CustomException("Invalid Id!");
+        }
+
+        dbContext.Students.Remove(student);
+        await dbContext.SaveChangesAsync();
+
+        return new MessageResponse { Message = "Removed successfully." };
+    }
+
+    public async Task<MessageResponse> UpdateAsync(StudentRequest studentRequest)
+    {
+        var existingStudent = await dbContext.Students.AsNoTracking().FirstOrDefaultAsync(x => x.Id == studentRequest.Id);
+        if (existingStudent == null)
+        {
+            throw new CustomException("Student id not found!");
+        }
+
+        var isValid = await dbContext.Students
+            .Select(x => new
+            {
+                x.Id,
+                x.AadharNo,
+                x.Email
+            })
+            .FirstOrDefaultAsync(x => (x.AadharNo == studentRequest.AadharNo
+            || x.Email == studentRequest.Email) && x.Id != studentRequest.Id);
+
+        if (isValid != null)
+        {
+            if (isValid.AadharNo == studentRequest.AadharNo)
+            {
+                throw new CustomException("Aadhar must be unique");
+            }
+            else throw new CustomException("Existing Email id! ");
+        }
+
+        existingStudent.Name = studentRequest.Name;
+        existingStudent.Dob = studentRequest.Dob;
+        existingStudent.AadharNo = studentRequest.AadharNo;
+        existingStudent.Course = studentRequest.Course;
+        existingStudent.Email = studentRequest.Email;
+
+        dbContext.Students.Update(existingStudent);
+        await dbContext.SaveChangesAsync();
+
+        return new MessageResponse { Message = "Updated successfully." };
     }
 }
