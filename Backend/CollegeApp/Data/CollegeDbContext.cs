@@ -5,7 +5,7 @@ namespace CollegeApp.Data;
 
 public class CollegeDbContext : DbContext
 {
-    public CollegeDbContext(DbContextOptions options) : base(options)
+    public CollegeDbContext(DbContextOptions<CollegeDbContext> options) : base(options)
     {
     }
 

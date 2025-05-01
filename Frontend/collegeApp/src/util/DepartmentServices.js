@@ -1,4 +1,6 @@
-import { API_BASE } from "./Service";
+import {
+    API_BASE
+} from "./Service";
 
 export const getDepartments = async () => {
     try {
@@ -14,6 +16,7 @@ export const getDepartments = async () => {
 
 export const saveDepartment = async (payload) => {
     try {
+        console.log("payload is ", payload);
         const response = await fetch(`${API_BASE}/api/Department`, {
             method: 'POST',
             headers: {
@@ -21,16 +24,38 @@ export const saveDepartment = async (payload) => {
             },
             body: JSON.stringify(payload)
         });
-        if (!response.ok) throw new Error("Failed to save");
+        if (!response.ok){
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to save department!');
+        } 
+        
         alert("Department added successfully.");
-    } catch (ex) {
+    } catch (error) {
         console.error("Error Occured");
+        throw error;
+    }
+}
+
+export const updateDepartment = async (payload) => {
+    try {
+        console.log("update service for departmen hittied");
+        const response = await fetch(`${API_BASE}/update`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error("Failed to update!");
+        alert("Department updated successfully!");
+    } catch (error) {
+        console.error("Error Occured!");
+        alert("Error occured, try after sometime!");
     }
 }
 
 export const deleteDepartment = async (id) => {
     try {
-        // console.log("in svc " , id);
         const url = `${API_BASE}/id/${id}`;
         const response = await fetch(url, {
             method: 'DELETE',

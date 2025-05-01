@@ -7,7 +7,7 @@ public class StudentRequest
 {
     public int Id { get; set; }
     [Required(ErrorMessage = "Name is required!")]
-    [RegularExpression(RegexPatterns.AlphaOnly, ErrorMessage = "Only Alphabet allowed!")]
+    [RegularExpression(RegexPatterns.AlphaSpace, ErrorMessage = "Only Alphabet allowed!")]
     public string Name { get; set; }
 
     [Required(ErrorMessage = "Date of birth is required!")]

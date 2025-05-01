@@ -8,7 +8,7 @@ public class ApplicantRequest
     public int Id { get; set; }
     [Required(ErrorMessage = "Name is required!")]
     [MaxLength(50, ErrorMessage = "Only 50 character allowed!")]
-    [RegularExpression(RegexPatterns.AlphaOnly, ErrorMessage = "Only Alphabet allowed!")]
+    [RegularExpression(RegexPatterns.AlphaSpace, ErrorMessage = "Only Alphabet allowed!")]
     public string Name { get; set; }
 
     [Required(ErrorMessage = "Aadhar Number is required!")]

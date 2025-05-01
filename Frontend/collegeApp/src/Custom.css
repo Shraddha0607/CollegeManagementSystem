@@ -12,3 +12,18 @@
   .control-error p {
     margin: 0;
   }
+
+  .result-modal {
+    border: none;
+    border-radius: 8px;
+    padding: 2rem;
+    background-color: #d7fcf8;
+  }
+  
+  .result-modal[open] {
+    animation: slide-in-from-top 0.35s ease-out;
+  }
+  
+  .result-modal::backdrop {
+    background: rgba(0, 0, 0, 0.9);
+  }
