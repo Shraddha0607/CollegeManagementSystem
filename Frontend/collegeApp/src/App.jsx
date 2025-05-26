@@ -6,30 +6,37 @@ import Department from './components/Admin/Department';
 import Student from './components/Admin/Student';
 import Applicant from './components/Admin/Applicant';
 import Staff from './components/Admin/Staff'
+import AuthContextProvider from './store/AuthContext';
+import { useContext } from 'react';
 
 
 
 export default function App() {
+
+  const authContext = useContext
   return (
-    <Router>
-      <div className='mt-3'>
-        <p><Link to="/User, /">Home</Link></p>
-        <p><Link to="/Admin">Admin</Link></p>
-      </div>
+    <AuthContextProvider>
+      <Router>
+        <div className='mt-3'>
+          <p><Link to="/User, /">Home</Link></p>
+          <p><Link to="/Admin">Admin</Link></p>
+        </div>
 
 
-      <div>
-        <Routes>
-          <Route path="/User, /" element={<Home />} />
-          <Route path="/Admin" element={<AdminPortal />} >
-            <Route path='Department' element={<Department />} />
-            <Route path='Staff' element={<Staff />} />
-            <Route path='Student' element={< Student />} />
-            <Route path='Applicant' element={< Applicant />} />
-          </Route>
-        </Routes>
-      </div>
+        <div>
+          <Routes>
+            <Route path="/User, /" element={<Home />} />
+            <Route path="/Admin" element={<AdminPortal />} >
+              <Route path='Department' element={<Department />} />
+              <Route path='Staff' element={<Staff />} />
+              <Route path='Student' element={< Student />} />
+              <Route path='Applicant' element={< Applicant />} />
+            </Route>
+          </Routes>
+        </div>
 
-    </Router>
+      </Router>
+    </AuthContextProvider>
+
   )
 }

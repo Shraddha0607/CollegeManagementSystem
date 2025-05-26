@@ -1,4 +1,3 @@
-import React from 'react'
 import { menus } from '../../util/Service'
 import '../../index.css'
 import '../../assets/react.svg'
