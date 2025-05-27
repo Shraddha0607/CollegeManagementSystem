@@ -2,24 +2,28 @@ import React from 'react'
 import { admin_menus } from '../../util/Service'
 import { Link, Outlet } from 'react-router-dom'
 import '../../index.css'
+import MainNavigation from '../MainNavigation'
 
 function AdminPortal() {
     return (
         <>
-            <div id="navbar">
+            <MainNavigation />
+            <div className='mt-5' id="navbar">
                 <ul>
                     {admin_menus.map((menu) => (
                         <li key={menu.id} className='btn btn-secondary mx-1'>
                             <Link to={`/Admin/${menu.name}`} className='text-white'>
                                 {menu.name}
                             </Link>
-
                         </li>
                     ))}
                 </ul>
 
             </div>
-            <Outlet />
+            <div>
+                <Outlet />
+            </div>
+
         </>
 
     )

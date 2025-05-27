@@ -28,7 +28,6 @@ function Staff() {
         }
 
         await saveStaff(payload);
-        console.log("after saving staff");
     }
 
     function handleChange(event) {
@@ -39,12 +38,7 @@ function Staff() {
     useEffect(() => {
         getDepartments().then((data) => setDepartmentOptions(data))
             .finally(() => setIsLoading(true));
-        // setDepartmentOptions(getDepartments());
-        console.log(departmentOptions, " are the departments");
-
     }, []);
-
-    console.log("departments are : ", departmentOptions);
 
     return (
         <>

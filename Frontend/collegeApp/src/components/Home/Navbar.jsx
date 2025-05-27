@@ -5,7 +5,7 @@ import '../../assets/react.svg'
 function Navbar() {
   return (
     <>
-      <div id="navbar">
+      <div className='mt-5' id="navbar">
       <img src="/vite.svg"></img>
         {<ul>
           {menus.map((menu) => (
